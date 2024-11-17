@@ -3,6 +3,7 @@ import NewsFeed from "@/src/components/NewsFeed";
 import ContentArea from "../src/components/ContentArea";
 import Header from "../src/components/Header";
 import SearchSection from "../src/components/SearchSection";
+import StockData from "../src/components/StockData";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         </div>
 
         <ContentArea />
+        <StockData />
       </div>
     </div>
   );
