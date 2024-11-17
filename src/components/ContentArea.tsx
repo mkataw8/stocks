@@ -1,7 +1,7 @@
 "use client";
 import { createChart } from "lightweight-charts";
 import { useEffect, useRef } from "react";
-
+import WatchList from "./WatchList";
 const ContentArea = () => {
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -87,7 +87,9 @@ const ContentArea = () => {
       ></div>
       {/* Other Content */}
       <div className="flex flex-col gap-4">
-        <div>{/* <WatchList /> */}</div>
+        <div>
+          <WatchList />
+        </div>
       </div>
     </div>
   );
