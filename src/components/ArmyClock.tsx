@@ -27,7 +27,11 @@ const ArmyClock: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <p className="text-lg justify-center">{time} EST</p>;
+  return (
+    <div className="flex space-x-3">
+      <p className="text-lg justify-center ">{time} EST</p>
+    </div>
+  );
 };
 
 export default ArmyClock;
