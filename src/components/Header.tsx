@@ -1,3 +1,4 @@
+import { UserButton } from "@clerk/clerk-react";
 import React from "react";
 import ArmyClock from "./ArmyClock";
 
@@ -30,7 +31,9 @@ const Header: React.FC = () => (
     </span>
     <div className="flex text-black ">
       <p className="mr-5 text-lg font-bold">{formattedDate}</p>
-      <div className="w-7 h-7 bg-black rounded-full"></div>
+      <div className="w-7 h-7 bg-black rounded-full">
+        <UserButton />
+      </div>
     </div>
   </header>
 );

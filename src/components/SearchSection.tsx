@@ -11,7 +11,7 @@ const SearchSection: React.FC<ChildProps> = ({ handleSearchData }) => {
   // Handle search button click
   function handleSearch() {
     if (inputRef.current) {
-      handleSearchData(inputRef.current.value); // Update stockName with input value
+      handleSearchData(inputRef.current.value.toUpperCase()); // Update stockName with input value
       console.log("Searching for stock:", inputRef.current.value);
     }
   }

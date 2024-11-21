@@ -126,7 +126,7 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
       </div>
 
       {/* Additional Stock Information */}
-      <div className="bg-purple-500 text-white flex items-center justify-center rounded">
+      <div className="bg-purple-500 text-white text-[25px] flex items-center justify-center rounded">
         <ul>
           <li>
             Outstanding Shares:{" "}
