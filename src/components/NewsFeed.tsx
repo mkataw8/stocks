@@ -11,8 +11,8 @@ type NewsItem = {
 
 const NewsFeed: React.FC = () => {
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
-  const [displayCount, setDisplayCount] = useState<number>(2); // Default to showing 2 articles
-  const [isExpanded, setIsExpanded] = useState<boolean>(false); // Track whether the view is expanded
+  const [displayCount, setDisplayCount] = useState<number>(2);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   useEffect(() => {
     const url = "https://cnbc-markets-and-news-data.p.rapidapi.com/news/latest";
@@ -44,16 +44,14 @@ const NewsFeed: React.FC = () => {
     fetchNews();
   }, []);
 
-  // Handle loading more articles
   const loadMore = () => {
-    setDisplayCount(6); // Display 6 articles
-    setIsExpanded(true); // Expand the view
+    setDisplayCount(6);
+    setIsExpanded(true);
   };
 
-  // Handle reverting to 2 articles
   const loadLess = () => {
-    setDisplayCount(2); // Display 2 articles
-    setIsExpanded(false); // Collapse the view
+    setDisplayCount(2);
+    setIsExpanded(false);
   };
 
   return (

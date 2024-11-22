@@ -8,7 +8,7 @@ const CurrentBonds: React.FC = () => {
   const [selectedYield, setSelectedYield] = useState<number | null>(null);
   const sec_API = process.env.NEXT_PUBLIC_SEC_API;
   useEffect(() => {
-    if (!year) return; // Prevent fetching if `year` is null
+    if (!year) return;
 
     const fetchYields = async () => {
       try {

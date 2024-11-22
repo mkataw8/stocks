@@ -23,7 +23,6 @@ const ArmyClock: React.FC = () => {
     updateTime();
     const interval = setInterval(updateTime, 1000);
 
-    // Cleanup interval on unmount
     return () => clearInterval(interval);
   }, []);
 

@@ -19,7 +19,7 @@ const monthNames = [
   "Nov",
   "Dec",
 ];
-const month = monthNames[today.getMonth()]; // Get month name
+const month = monthNames[today.getMonth()];
 const day = today.getDate();
 
 const formattedDate = `${month} ${day}, ${year}`;

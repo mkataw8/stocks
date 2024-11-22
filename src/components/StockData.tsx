@@ -38,9 +38,8 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
     return `${year}-${month}-${day}`;
   }
 
-  // Fetch stock price and volume data
   useEffect(() => {
-    if (!getStock) return; // Ensure `getStock` is provided
+    if (!getStock) return;
 
     const getStockData = async () => {
       const businessDate = getBusinessDate();
@@ -68,10 +67,8 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
     getStockData();
   }, [getStock]);
 
-  // Fetch outstanding shares data
-
   useEffect(() => {
-    if (!getStock) return; // Ensure `getStock` is provided
+    if (!getStock) return;
 
     const getMore = async () => {
       try {
@@ -80,9 +77,9 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
         );
         const data = await response.json();
         if (data.data && data.data.length > 0) {
-          const result = data.data[0]; // Assuming first result is the latest
+          const result = data.data[0];
           setMoreInfo({
-            outstandingShares: result.float.outstandingShares[0].value, // Access outstandingShares from the result
+            outstandingShares: result.float.outstandingShares[0].value,
           });
         } else {
           console.log("No results found for the stock.");
@@ -110,7 +107,6 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
   };
   return (
     <div className="w-full h-70 grid grid-cols-2 md:grid-cols-3 gap-4 bg-gray-800 p-4">
-      {/* Ticker Information */}
       <div className="rounded grid grid-rows-2 gap-2">
         <div className="bg-blue-500 text-[50px] text-white flex items-center justify-center rounded h-full w-full">
           {tickerInfo ? tickerInfo.ticker : "Loading..."}

@@ -14,7 +14,7 @@ const ContentArea = () => {
       height: 500,
       layout: {
         background: {
-          color: "bg-slate-950", // Background color
+          color: "bg-slate-950",
         },
         textColor: "#FFFFFF",
       },
@@ -28,7 +28,6 @@ const ContentArea = () => {
       },
     });
 
-    // Add Area Series
     const areaSeries = chart.addAreaSeries({
       topColor: "rgba(38,198,218, 0.56)",
       bottomColor: "rgba(38,198,218, 0.04)",
@@ -41,7 +40,6 @@ const ContentArea = () => {
       { time: "2024-01-02", value: 24.67 },
     ]);
 
-    // Add Candlestick Series
     const candlestickSeries = chart.addCandlestickSeries({
       upColor: "rgba(255, 144, 0, 1)",
       downColor: "rgba(0, 144, 255, 1)",
@@ -61,7 +59,6 @@ const ContentArea = () => {
       { time: "2024-10-10", open: 112, high: 115, low: 110, close: 113 },
     ]);
 
-    // Example updates
     setTimeout(() => {
       areaSeries.update({ time: "2024-11-16", value: 25 });
       candlestickSeries.update({
@@ -80,12 +77,11 @@ const ContentArea = () => {
 
   return (
     <div className="grid grid-cols-3 gap-4 pb-5 shadow:lg px-4">
-      {/* Chart Container */}
       <div
         className="col-span-2 bg-black h-[500px]"
         ref={chartContainerRef}
       ></div>
-      {/* Other Content */}
+
       <div className="flex flex-col gap-4">
         <div>
           <WatchList />

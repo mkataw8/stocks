@@ -19,9 +19,8 @@ const WatchlistComponent: React.FC = () => {
   const [newStock, setNewStock] = useState<string>("");
   const [newShares, setNewShares] = useState<string>("");
 
-  // Fetch the watchlist for the logged-in user
   useEffect(() => {
-    if (!userID) return; // Ensure userID is available
+    if (!userID) return;
 
     const fetchWatchlist = async () => {
       try {
@@ -43,7 +42,6 @@ const WatchlistComponent: React.FC = () => {
     fetchWatchlist();
   }, [userID]);
 
-  // Add a new stock to the user's watchlist
   const addStock = async () => {
     if (!userID) {
       console.error("User ID is missing. Ensure the user is logged in.");
@@ -61,8 +59,7 @@ const WatchlistComponent: React.FC = () => {
       user_id: userID,
     };
 
-    // Optimistically update the state
-    const tempId = Date.now(); // Temporary ID for optimistic update
+    const tempId = Date.now();
     setWatchlist((prev) => [...prev, { ...newEntry, id: tempId }]);
 
     const { data, error } = await supabase.from("watchlist").insert(newEntry);
@@ -73,7 +70,7 @@ const WatchlistComponent: React.FC = () => {
       setWatchlist((prev) => prev.filter((stock) => stock.id !== tempId));
     } else if (data) {
       console.log("New stock added:", data);
-      // Replace the temporary item with the real data
+
       setWatchlist((prev) => [
         ...prev,
         ...(Array.isArray(data) ? data : [data]),

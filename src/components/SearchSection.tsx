@@ -6,12 +6,12 @@ type ChildProps = {
 };
 
 const SearchSection: React.FC<ChildProps> = ({ handleSearchData }) => {
-  const inputRef = useRef<HTMLInputElement>(null); // Ref to track the input value
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Handle search button click
   function handleSearch() {
     if (inputRef.current) {
-      handleSearchData(inputRef.current.value.toUpperCase()); // Update stockName with input value
+      handleSearchData(inputRef.current.value.toUpperCase());
       console.log("Searching for stock:", inputRef.current.value);
     }
   }
