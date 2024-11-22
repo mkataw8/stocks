@@ -14,7 +14,7 @@ interface User {
   created_at: string;
 }
 
-export const Fastant = async () => {
+export const Fastant = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   const [stockName, setStockName] = useState<string>("SPY");

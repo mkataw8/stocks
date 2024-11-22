@@ -6,14 +6,14 @@ const CurrentBonds: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [year, setYear] = useState<string | null>(null);
   const [selectedYield, setSelectedYield] = useState<number | null>(null);
-
+  const sec_API = process.env.NEXT_PUBLIC_SEC_API;
   useEffect(() => {
     if (!year) return; // Prevent fetching if `year` is null
 
     const fetchYields = async () => {
       try {
         const response = await fetch(
-          `https://www.alphavantage.co/query?function=TREASURY_YIELD&interval=monthly&maturity=${year}year&apikey=K6HTAFFF0M6CAMEP`
+          `https://www.alphavantage.co/query?function=TREASURY_YIELD&interval=monthly&maturity=${year}year&apikey=${sec_API}`
         );
         const data = await response.json();
         const get_year = data.data?.[0];

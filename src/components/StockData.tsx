@@ -19,7 +19,7 @@ type ChildProps = {
 const StockData: React.FC<ChildProps> = ({ getStock }) => {
   const [tickerInfo, setTickerInfo] = useState<inFo | undefined>();
   const [moreInfo, setMoreInfo] = useState<moreInfo | undefined>();
-
+  const poly_API = process.env.NEXT_PUBLIC_POLY_API;
   // Function to calculate the most recent business date
   function getBusinessDate() {
     const today = new Date();
@@ -46,7 +46,7 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
       const businessDate = getBusinessDate();
       try {
         const response = await fetch(
-          `https://api.polygon.io/v2/aggs/ticker/${getStock}/range/1/day/${businessDate}/${businessDate}?apiKey=rWgCPou0Ak2orivwUAflkn5ZWNiB3pGD`
+          `https://api.polygon.io/v2/aggs/ticker/${getStock}/range/1/day/${businessDate}/${businessDate}?apiKey=${poly_API}`
         );
         const data = await response.json();
         if (data.results && data.results.length > 0) {

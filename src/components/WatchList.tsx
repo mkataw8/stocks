@@ -21,21 +21,22 @@ const WatchlistComponent: React.FC = () => {
 
   // Fetch the watchlist for the logged-in user
   useEffect(() => {
+    if (!userID) return; // Ensure userID is available
+
     const fetchWatchlist = async () => {
-      if (!userID) {
-        console.error("User ID is missing. Ensure the user is logged in.");
-        return;
-      }
+      try {
+        const { data, error } = await supabase
+          .from("watchlist")
+          .select("*")
+          .eq("user_id", userID);
 
-      const { data, error } = await supabase
-        .from("watchlist")
-        .select("*")
-        .eq("user_id", userID);
-
-      if (error) {
-        console.error("Error fetching watchlist:", error.message);
-      } else {
-        setWatchlist(data ?? []); // Ensure watchlist is an array
+        if (error) {
+          console.error("Error fetching watchlist:", error.message);
+        } else {
+          setWatchlist(data ?? []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch watchlist:", err);
       }
     };
 

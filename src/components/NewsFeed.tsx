@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+const cnbc_API = process.env.NEXT_PUBLIC_CNBC_API;
 type NewsItem = {
   headline: string;
   time: string;
@@ -18,7 +19,7 @@ const NewsFeed: React.FC = () => {
     const options = {
       method: "GET",
       headers: {
-        "x-rapidapi-key": "5179b6d649msh2cb1741b904950cp150c1cjsn7b7516c97263",
+        "x-rapidapi-key": `${cnbc_API}`,
         "x-rapidapi-host": "cnbc-markets-and-news-data.p.rapidapi.com",
       },
     };
