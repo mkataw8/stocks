@@ -1,20 +1,61 @@
 "use client";
-import { createChart } from "lightweight-charts";
+import { createChart, Time } from "lightweight-charts";
 import { useEffect, useRef } from "react";
 import WatchList from "./WatchList";
-const ContentArea = () => {
+
+type ChildProps = {
+  getStock: string;
+};
+
+const ContentArea: React.FC<ChildProps> = ({ getStock }) => {
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
+  const marketstack_API = process.env.NEXT_PUBLIC_MARKETSTACK_API;
 
   useEffect(() => {
-    if (!chartContainerRef.current) return;
+    if (!chartContainerRef.current || !getStock) return;
 
-    // Create the chart
+    const getChartData = async () => {
+      try {
+        const response = await fetch(
+          `http://api.marketstack.com/v1/eod?access_key=${marketstack_API}&symbols=${getStock}`
+        );
+        const data = await response.json();
+        const timeSeries = data["data"];
+        if (!timeSeries || timeSeries.length === 0) {
+          console.error("No data found in response");
+          return { areaData: [], candlestickData: [] };
+        }
+
+        const areaData = timeSeries
+          .map((entry: any) => ({
+            time: entry.date.split("T")[0] as Time,
+            value: entry.close,
+          }))
+          .sort((a: any, b: any) => a.time.localeCompare(b.time));
+
+        const candlestickData = timeSeries
+          .map((entry: any) => ({
+            time: entry.date.split("T")[0] as Time,
+            open: entry.open,
+            high: entry.high,
+            low: entry.low,
+            close: entry.close,
+          }))
+          .sort((a: any, b: any) => a.time.localeCompare(b.time));
+
+        return { areaData, candlestickData };
+      } catch (error) {
+        console.error("Error fetching chart data:", error);
+        return { areaData: [], candlestickData: [] };
+      }
+    };
+
     const chart = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth,
       height: 500,
       layout: {
         background: {
-          color: "bg-slate-950",
+          color: "#000000",
         },
         textColor: "#FFFFFF",
       },
@@ -26,62 +67,56 @@ const ContentArea = () => {
           color: "#404040",
         },
       },
+      timeScale: {
+        timeVisible: true,
+        borderColor: "#555",
+      },
     });
 
     const areaSeries = chart.addAreaSeries({
-      topColor: "rgba(38,198,218, 0.56)",
-      bottomColor: "rgba(38,198,218, 0.04)",
-      lineColor: "rgba(38,198,218, 1)",
-      lineWidth: 2,
+      topColor: "rgba(0, 0, 0, 0)",
+      bottomColor: "rgba(0, 0, 0, 0)",
+      lineColor: "rgba(0,0,0,0)",
+      lineWidth: 1,
     });
-    areaSeries.setData([
-      { time: "2023-12-31", value: 22.67 },
-      { time: "2024-01-01", value: 23.67 },
-      { time: "2024-01-02", value: 24.67 },
-    ]);
 
     const candlestickSeries = chart.addCandlestickSeries({
-      upColor: "rgba(255, 144, 0, 1)",
-      downColor: "rgba(0, 144, 255, 1)",
-      borderUpColor: "rgba(255, 144, 0, 1)",
-      borderDownColor: "rgba(0, 144, 255, 1)",
-      wickUpColor: "rgba(255, 144, 0, 1)",
-      wickDownColor: "rgba(0, 144, 255, 1)",
+      upColor: "#07bf04",
+      downColor: "#fc0303",
+      borderUpColor: "#07bf04",
+      borderDownColor: "#fc0303",
+      wickUpColor: "#07bf04",
+      wickDownColor: "#fc0303",
     });
-    candlestickSeries.setData([
-      {
-        time: "2024-09-09",
-        open: 109.87,
-        high: 114.69,
-        low: 85.66,
-        close: 111.26,
-      },
-      { time: "2024-10-10", open: 112, high: 115, low: 110, close: 113 },
-    ]);
 
-    setTimeout(() => {
-      areaSeries.update({ time: "2024-11-16", value: 25 });
-      candlestickSeries.update({
-        time: "2024-11-15",
-        open: 113,
-        high: 116,
-        low: 111,
-        close: 115,
+    const loadChartData = async () => {
+      const { areaData, candlestickData } = await getChartData();
+      if (areaData.length) areaSeries.setData(areaData);
+      if (candlestickData.length) candlestickSeries.setData(candlestickData);
+    };
+
+    loadChartData();
+
+    const handleResize = () => {
+      chart.applyOptions({
+        width: chartContainerRef.current?.clientWidth || 0,
       });
-    }, 2000);
+    };
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
       chart.remove();
+      window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [getStock, marketstack_API]);
 
   return (
-    <div className="grid grid-cols-3 gap-4 pb-5 shadow:lg px-4">
+    <div className="grid grid-cols-3 gap-4 pb-5 shadow-lg px-4">
       <div
         className="col-span-2 bg-black h-[500px]"
         ref={chartContainerRef}
       ></div>
-
       <div className="flex flex-col gap-4">
         <div>
           <WatchList />

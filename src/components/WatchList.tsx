@@ -66,7 +66,7 @@ const WatchlistComponent: React.FC = () => {
 
     if (error) {
       console.error("Error adding stock:", error.message);
-      // Rollback the optimistic update
+
       setWatchlist((prev) => prev.filter((stock) => stock.id !== tempId));
     } else if (data) {
       console.log("New stock added:", data);
@@ -82,10 +82,9 @@ const WatchlistComponent: React.FC = () => {
   };
 
   return (
-    <div className="bg-orange-500 h-auto p-4 rounded-lg shadow-lg">
+    <div className="bg-orange-500 h-[500px] p-4 rounded-lg shadow-lg">
       <h3 className="text-white text-lg font-semibold mb-4">Your Watchlist</h3>
 
-      {/* Display Watchlist */}
       <ul className="space-y-2 overflow-y-auto">
         {watchlist.length > 0 ? (
           watchlist.map((stock) => (
@@ -104,7 +103,6 @@ const WatchlistComponent: React.FC = () => {
         )}
       </ul>
 
-      {/* Add Stock Form */}
       <div className="mt-3">
         <h4 className="text-sm font-semibold mb-2 text-white">Add a Stock</h4>
         <div className="flex space-x-2">

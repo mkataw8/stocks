@@ -31,7 +31,7 @@ export const Fastant = () => {
           <SearchSection handleSearchData={handleSearchData} />
           <CurrentBonds />
         </div>
-        <ContentArea />
+        <ContentArea getStock={stockName} />
         <StockData getStock={stockName} />
       </div>
     </div>

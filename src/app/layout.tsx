@@ -16,8 +16,16 @@ export default function RootLayout({
       <html lang="en">
         <body>
           <SignedOut>
-            {" "}
-            <SignIn routing="hash" />{" "}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            >
+              <SignIn routing="hash" />
+            </div>
           </SignedOut>
 
           <SignedIn>{children}</SignedIn>

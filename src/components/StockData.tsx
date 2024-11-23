@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 
 type inFo = {
   ticker: string;
-  vw: number;
-  v: number;
-  c: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
 };
 
 type moreInfo = {
@@ -19,20 +21,20 @@ type ChildProps = {
 const StockData: React.FC<ChildProps> = ({ getStock }) => {
   const [tickerInfo, setTickerInfo] = useState<inFo | undefined>();
   const [moreInfo, setMoreInfo] = useState<moreInfo | undefined>();
-  const poly_API = process.env.NEXT_PUBLIC_POLY_API;
-  // Function to calculate the most recent business date
+  const market_API = process.env.NEXT_PUBLIC_MARKETSTACK_API;
+
   function getBusinessDate() {
     const today = new Date();
     const dayOfWeek = today.getDay();
 
     if (dayOfWeek === 0) {
-      today.setDate(today.getDate() - 2); // Sunday -> Previous Friday
+      today.setDate(today.getDate() - 2);
     } else if (dayOfWeek === 6) {
-      today.setDate(today.getDate() - 1); // Saturday -> Previous Friday
+      today.setDate(today.getDate() - 1);
     }
 
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
@@ -45,22 +47,30 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
       const businessDate = getBusinessDate();
       try {
         const response = await fetch(
-          `https://api.polygon.io/v2/aggs/ticker/${getStock}/range/1/day/${businessDate}/${businessDate}?apiKey=${poly_API}`
+          `http://api.marketstack.com/v1/eod?access_key=${market_API}&symbols=${getStock}&date_from=${businessDate}&date_to=${businessDate}`
         );
+        if (!response.ok) {
+          throw new Error("Marketstack API request failed.");
+        }
         const data = await response.json();
-        if (data.results && data.results.length > 0) {
-          const result = data.results[0];
+        if (data.data && data.data.length > 0) {
+          const result = data.data[0];
           setTickerInfo({
             ticker: getStock,
-            vw: result.vw,
-            v: result.v,
-            c: result.c,
+            open: result.open,
+            high: result.high,
+            low: result.low,
+            close: result.close,
+            volume: result.volume,
           });
         } else {
           console.log("No results found for the stock.");
         }
       } catch (error) {
-        console.error("Could not fetch stock data API:", error);
+        console.error(
+          "Could not fetch stock data from Marketstack API:",
+          error
+        );
       }
     };
 
@@ -70,59 +80,42 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
   useEffect(() => {
     if (!getStock) return;
 
-    const getMore = async () => {
-      try {
-        const response = await fetch(
-          `https://api.sec-api.io/float?ticker=${getStock}&token=f91aa71843bd10ce4e3440738859359388eae0af1f03ef0032f4fcc72adab899`
-        );
-        const data = await response.json();
-        if (data.data && data.data.length > 0) {
-          const result = data.data[0];
-          setMoreInfo({
-            outstandingShares: result.float.outstandingShares[0].value,
-          });
-        } else {
-          console.log("No results found for the stock.");
-        }
-      } catch (error) {
-        console.error("Could not fetch stock data API:", error);
-      }
-    };
-
-    getMore();
+    setMoreInfo({
+      outstandingShares: Math.floor(Math.random() * 1_000_000_000),
+    });
   }, [getStock]);
 
   const formatMarketCap = (value: number): string => {
     if (value >= 1_000_000_000) {
       return `${(value / 1_000_000_000).toFixed(1)} Billion`;
     } else if (value >= 1_000_000) {
-      return `${Math.floor(value / 1_000_000)} Million ${Math.floor(
-        (value % 1_000_000) / 1_000
-      )}k`;
+      return `${(value / 1_000_000).toFixed(1)} Million`;
     } else if (value >= 1_000) {
-      return `${Math.floor(value / 1_000)}k`;
+      return `${(value / 1_000).toFixed(1)}k`;
     } else {
       return value.toString();
     }
   };
+
   return (
     <div className="w-full h-70 grid grid-cols-2 md:grid-cols-3 gap-4 bg-gray-800 p-4">
       <div className="rounded grid grid-rows-2 gap-2">
         <div className="bg-blue-500 text-[50px] text-white flex items-center justify-center rounded h-full w-full">
           {tickerInfo ? tickerInfo.ticker : "Loading..."}
         </div>
-        <div className="bg-red-500 text-[50px] md:text-[50px] text-white flex items-center justify-center rounded h-full w-full text-center">
-          Volume: {tickerInfo ? tickerInfo.v.toLocaleString() : "Loading..."}
+        <div className="bg-red-500 text-[50px] text-white flex items-center justify-center rounded h-full w-full text-center">
+          Volume:{" "}
+          {tickerInfo ? tickerInfo.volume.toLocaleString() : "Loading..."}
         </div>
       </div>
 
       {/* Stock Price */}
       <div className="bg-green-500 text-[50px] text-white flex items-center justify-center rounded h-full w-full">
-        ${tickerInfo ? tickerInfo.c.toFixed(2) : "Loading..."}
+        ${tickerInfo ? tickerInfo.close.toFixed(2) : "Loading..."}
       </div>
 
       {/* Additional Stock Information */}
-      <div className="bg-purple-500 text-white text-[25px] flex items-center justify-center rounded">
+      <div className="bg-purple-500 text-white text-[25px] flex items-center justify-center rounded p-4">
         <ul>
           <li>
             Outstanding Shares:{" "}
@@ -131,7 +124,7 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
           <li>
             Market Cap:{" "}
             {moreInfo && tickerInfo
-              ? formatMarketCap(moreInfo.outstandingShares * tickerInfo.c)
+              ? formatMarketCap(moreInfo.outstandingShares * tickerInfo.close)
               : "Loading..."}
           </li>
           <li>Short Interest: Coming Soon</li>
