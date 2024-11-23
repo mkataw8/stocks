@@ -98,36 +98,39 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
   };
 
   return (
-    <div className="w-full h-70 grid grid-cols-2 md:grid-cols-3 gap-4 bg-gray-800 p-4">
-      <div className="rounded grid grid-rows-2 gap-2">
-        <div className="bg-blue-500 text-[50px] text-white flex items-center justify-center rounded h-full w-full">
+    <div className="w-full h-auto grid grid-cols-1 md:grid-cols-3  bg-gray-800 p-4">
+      {/* Ticker Info */}
+      <div className="rounded grid grid-rows-2  bg-gray-700 h-full w-full md:w-[300px]">
+        <div className="bg-blue-500 text-[30px] md:text-[50px] text-white flex items-center justify-center   h-[125px]">
           {tickerInfo ? tickerInfo.ticker : "Loading..."}
         </div>
-        <div className="bg-red-500 text-[50px] text-white flex items-center justify-center rounded h-full w-full text-center">
+        <div className="bg-red-500 text-[20px] md:text-[30px] text-white flex items-center justify-center h-[125px] text-center">
           Volume:{" "}
           {tickerInfo ? tickerInfo.volume.toLocaleString() : "Loading..."}
         </div>
       </div>
 
       {/* Stock Price */}
-      <div className="bg-green-500 text-[50px] text-white flex items-center justify-center rounded h-full w-full">
+      <div className="bg-green-500 text-[30px] md:text-[50px] text-white flex items-center justify-center rounded p-4 h-[250px] w-full md:w-[300px]">
         ${tickerInfo ? tickerInfo.close.toFixed(2) : "Loading..."}
       </div>
 
       {/* Additional Stock Information */}
-      <div className="bg-purple-500 text-white text-[25px] flex items-center justify-center rounded p-4">
-        <ul>
+      <div className="bg-purple-500 text-white text-[15px] md:text-[25px] flex flex-col justify-center items-start rounded p-4 h-[250px] w-full md:w-[300px]">
+        <ul className="space-y-2">
           <li>
-            Outstanding Shares:{" "}
+            <strong>Outstanding Shares:</strong>{" "}
             {moreInfo?.outstandingShares.toLocaleString() || "Loading..."}
           </li>
           <li>
-            Market Cap:{" "}
+            <strong>Market Cap:</strong>{" "}
             {moreInfo && tickerInfo
               ? formatMarketCap(moreInfo.outstandingShares * tickerInfo.close)
               : "Loading..."}
           </li>
-          <li>Short Interest: Coming Soon</li>
+          <li>
+            <strong>Short Interest:</strong> Coming Soon
+          </li>
         </ul>
       </div>
     </div>

@@ -112,12 +112,15 @@ const ContentArea: React.FC<ChildProps> = ({ getStock }) => {
   }, [getStock, marketstack_API]);
 
   return (
-    <div className="grid grid-cols-3 gap-4 pb-5 shadow-lg px-4">
+    <div
+      className="
+    grid grid-cols-1 md:grid-cols-3 gap-4 pb-5 shadow-lg px-4 "
+    >
       <div
         className="col-span-2 bg-black h-[500px]"
         ref={chartContainerRef}
       ></div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 col-span-1 ">
         <div>
           <WatchList />
         </div>

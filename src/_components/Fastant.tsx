@@ -24,14 +24,27 @@ export const Fastant = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="">
-        <Header />
+      {/* Header Section */}
+      <Header />
+
+      {/* News Feed */}
+      <div className="px-4">
         <NewsFeed />
-        <div className="grid grid-cols-3 gap-4  px-4">
-          <SearchSection handleSearchData={handleSearchData} />
-          <CurrentBonds />
-        </div>
+      </div>
+
+      {/* Search Section and Bonds */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 mt-4">
+        <SearchSection handleSearchData={handleSearchData} />
+        <CurrentBonds />
+      </div>
+
+      {/* Content Area */}
+      <div className="px-4 mt-4">
         <ContentArea getStock={stockName} />
+      </div>
+
+      {/* Stock Data */}
+      <div className="px-4 mt-4">
         <StockData getStock={stockName} />
       </div>
     </div>
