@@ -17,7 +17,7 @@ const ContentArea: React.FC<ChildProps> = ({ getStock }) => {
     const getChartData = async () => {
       try {
         const response = await fetch(
-          `http://api.marketstack.com/v1/eod?access_key=${marketstack_API}&symbols=${getStock}`
+          `https://api.marketstack.com/v1/eod?access_key=${marketstack_API}&symbols=${getStock}`
         );
         const data = await response.json();
         const timeSeries = data["data"];
