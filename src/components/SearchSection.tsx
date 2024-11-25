@@ -7,7 +7,6 @@ type ChildProps = {
   handleSearchData: (data: string) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  firstName: string;
 };
 
 const SearchSection: React.FC<ChildProps> = ({
@@ -17,9 +16,9 @@ const SearchSection: React.FC<ChildProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useUser();
-  const firstName = user?.firstName;
 
-  // Handle search button click
+  const firstName = user?.firstName ?? undefined;
+
   function handleSearch() {
     if (inputRef.current) {
       handleSearchData(inputRef.current.value.toUpperCase());
@@ -38,7 +37,6 @@ const SearchSection: React.FC<ChildProps> = ({
 
       {/* Row: Search Bar */}
       <div className="w-full flex justify-center mt-4">
-        {/* Search Bar */}
         <div className="flex items-center border rounded shadow-md px-4 py-2 w-full max-w-5xl bg-gray-200">
           <input
             type="text"

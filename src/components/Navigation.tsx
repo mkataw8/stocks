@@ -4,10 +4,10 @@ import React from "react";
 type NavigationBarProps = {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  firstName?: string | null;
+  firstName?: string;
 };
 
-const NavigationBar: React.FC<NavigationBarProps> = ({
+const Navigation: React.FC<NavigationBarProps> = ({
   activeTab,
   setActiveTab,
   firstName,
@@ -16,12 +16,10 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 
   return (
     <div className="flex items-center justify-between bg-slate-950 text-white py-4 px-6 rounded-lg shadow-md">
-      {/* Welcome Message */}
       <div className="text-4xl space-x-3 font-bold flex sm:text-2xl">
-        <p className="text-orange-500">Welcome</p> <p>{firstName}</p>
+        <p className="text-orange-500">Welcome</p> <p>{firstName || "Guest"}</p>
       </div>
 
-      {/* Navigation Tabs */}
       <nav className="flex space-x-8 text-xl sm:space-x-4 sm:text-sm">
         {tabs.map((tab) => (
           <button
@@ -39,4 +37,4 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   );
 };
 
-export default NavigationBar;
+export default Navigation;
