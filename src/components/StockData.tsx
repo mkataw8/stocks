@@ -47,8 +47,7 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
       const businessDate = getBusinessDate();
       try {
         const response = await fetch(
-          `https://api.marketstack.com/v1/eod?access_key=${market_API}&symbols=${getStock}
-`
+          `https://api.marketstack.com/v1/eod?access_key=${market_API}&symbols=${getStock}`
         );
         if (!response.ok) {
           throw new Error("Marketstack API request failed.");
@@ -99,38 +98,62 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
   };
 
   return (
-    <div className="w-full h-auto grid grid-cols-1 md:grid-cols-3  flex justify-between bg-gray-800 m-0 p-4">
-      {/* Ticker Info */}
-      <div className="rounded grid grid-rows-2  bg-gray-700 h-full w-full md:w-[300px]">
-        <div className="bg-blue-500 text-[30px] md:text-[50px] text-white flex items-center justify-center   h-[125px]">
-          {tickerInfo ? tickerInfo.ticker : "Loading..."}
-        </div>
-        <div className="bg-red-500 text-[20px] md:text-[30px] text-white flex items-center justify-center h-[125px] text-center">
-          Volume:{" "}
-          {tickerInfo ? tickerInfo.volume.toLocaleString() : "Loading..."}
+    <div className="w-full p-4 bg-gray-900 text-white rounded-lg shadow-lg space-y-4">
+      {/* Ticker Information */}
+      <div className="flex justify-between items-center border-b border-gray-700 pb-4">
+        <h1 className="text-2xl font-bold">
+          {tickerInfo?.ticker || "Loading..."}
+        </h1>
+        <div className="text-lg font-semibold">
+          ${tickerInfo?.close.toFixed(2) || "Loading..."}
         </div>
       </div>
 
-      {/* Stock Price */}
-      <div className="bg-green-500 text-[30px] md:text-[50px] text-white flex items-center justify-center rounded p-4 h-[250px] w-full md:w-[300px]">
-        ${tickerInfo ? tickerInfo.close.toFixed(2) : "Loading..."}
+      {/* Price Details */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="flex flex-col items-center p-3 bg-gray-800 rounded-lg">
+          <span className="text-sm text-gray-400">Open</span>
+          <span className="text-lg font-bold">
+            ${tickerInfo?.open.toFixed(2) || "N/A"}
+          </span>
+        </div>
+        <div className="flex flex-col items-center p-3 bg-gray-800 rounded-lg">
+          <span className="text-sm text-gray-400">High</span>
+          <span className="text-lg font-bold">
+            ${tickerInfo?.high.toFixed(2) || "N/A"}
+          </span>
+        </div>
+        <div className="flex flex-col items-center p-3 bg-gray-800 rounded-lg">
+          <span className="text-sm text-gray-400">Low</span>
+          <span className="text-lg font-bold">
+            ${tickerInfo?.low.toFixed(2) || "N/A"}
+          </span>
+        </div>
+        <div className="flex flex-col items-center p-3 bg-gray-800 rounded-lg">
+          <span className="text-sm text-gray-400">Volume</span>
+          <span className="text-lg font-bold">
+            {tickerInfo?.volume.toLocaleString() || "N/A"}
+          </span>
+        </div>
       </div>
 
-      {/* Additional Stock Information */}
-      <div className="bg-purple-500 text-white text-[15px] md:text-[25px] flex flex-col justify-center items-start rounded p-4 h-[250px] w-full md:w-[300px]">
+      {/* Additional Info */}
+      <div className="p-4 bg-gray-800 rounded-lg">
+        <h3 className="text-lg font-semibold mb-2">Additional Info</h3>
         <ul className="space-y-2">
           <li>
-            <strong>Outstanding Shares:</strong>{" "}
-            {moreInfo?.outstandingShares.toLocaleString() || "Loading..."}
+            <span className="text-sm text-gray-400">Outstanding Shares:</span>{" "}
+            <span className="text-lg font-bold">
+              {moreInfo?.outstandingShares.toLocaleString() || "N/A"}
+            </span>
           </li>
           <li>
-            <strong>Market Cap:</strong>{" "}
-            {moreInfo && tickerInfo
-              ? formatMarketCap(moreInfo.outstandingShares * tickerInfo.close)
-              : "Loading..."}
-          </li>
-          <li>
-            <strong>Short Interest:</strong> Coming Soon
+            <span className="text-sm text-gray-400">Market Cap:</span>{" "}
+            <span className="text-lg font-bold">
+              {moreInfo && tickerInfo
+                ? formatMarketCap(moreInfo.outstandingShares * tickerInfo.close)
+                : "N/A"}
+            </span>
           </li>
         </ul>
       </div>
