@@ -2,8 +2,8 @@ import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata = {
-  title: "Next.js with Clerk",
-  description: "An example app with Clerk authentication.",
+  title: "Fastant",
+  description: "Your Stock Haven.",
 };
 
 export default function RootLayout({
