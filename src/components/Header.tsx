@@ -30,8 +30,10 @@ const day = today.getDate();
 const formattedDate = `${month} ${day}, ${year}`;
 
 const Header: React.FC = () => (
-  <header className="flex justify-between items-center p-4 bg-white shadow-md">
-    <h1 className="text-xl font-bold text-black">FASTANT</h1>
+  <header className="flex justify-between items-center p-2 bg-white shadow-md">
+    <div>
+      <h1 className="text-xl font-bold text-black">FASTANT</h1>
+    </div>
     <span className="text-lg text-black">
       <ArmyClock />
     </span>

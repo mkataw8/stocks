@@ -18,7 +18,7 @@ const WatchList: React.FC = () => {
   } = useWatchlist();
 
   return (
-    <div className="bg-orange-500 h-[500px] p-4 rounded-lg shadow-lg">
+    <div className="bg-orange-500 h-[500px] p-4 rounded-lg shadow-lg w-fill">
       <h3 className="text-white text-lg font-semibold mb-4">Your Watchlist</h3>
 
       <ul className="space-y-2 overflow-y-auto">

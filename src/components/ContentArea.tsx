@@ -113,8 +113,8 @@ const ContentArea: React.FC<ChildProps> = ({ getStock }) => {
 
   return (
     <div
-      className="
-    grid grid-cols-1 md:grid-cols-3 gap-4 pb-5 shadow-lg px-4 "
+      className=" 
+    grid grid-cols-1 md:grid-cols-3 gap-4 pb-5 shadow-lg px-2 "
     >
       <div
         className="col-span-2 bg-black h-[500px]"
