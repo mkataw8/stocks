@@ -1,9 +1,15 @@
-import { UserButton } from "@clerk/clerk-react";
+"use client";
+
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 import React from "react";
 import ArmyClock from "./ArmyClock";
 
 const today = new Date();
-
 const year = today.getFullYear();
 const monthNames = [
   "Jan",
@@ -21,19 +27,29 @@ const monthNames = [
 ];
 const month = monthNames[today.getMonth()];
 const day = today.getDate();
-
 const formattedDate = `${month} ${day}, ${year}`;
+
 const Header: React.FC = () => (
-  <header className="flex justify-between items-center p-4  bg-white shadow-md">
+  <header className="flex justify-between items-center p-4 bg-white shadow-md">
     <h1 className="text-xl font-bold text-black">FASTANT</h1>
     <span className="text-lg text-black">
       <ArmyClock />
     </span>
-    <div className="flex text-black ">
+    <div className="flex items-center text-black">
       <p className="mr-5 text-lg font-bold">{formattedDate}</p>
-      <div className="w-7 h-7 bg-black rounded-full">
-        <UserButton />
-      </div>
+
+      <SignedIn>
+        <div className="w-7 h-7 bg-black rounded-full">
+          <UserButton />
+        </div>
+      </SignedIn>
+      <SignedOut>
+        <SignInButton mode="modal">
+          <button className="bg-black text-white px-4 py-2 rounded hover:bg-orange-500">
+            Sign In
+          </button>
+        </SignInButton>
+      </SignedOut>
     </div>
   </header>
 );

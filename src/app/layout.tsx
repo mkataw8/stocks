@@ -1,4 +1,4 @@
-import { ClerkProvider, SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata = {
@@ -15,18 +15,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <SignedOut>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-              }}
-            >
-              <SignIn routing="hash" />
-            </div>
-          </SignedOut>
+          <SignedOut>{children}</SignedOut>
 
           <SignedIn>{children}</SignedIn>
         </body>
