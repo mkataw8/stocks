@@ -49,10 +49,13 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
         const response = await fetch(
           `https://api.marketstack.com/v1/eod?access_key=${market_API}&symbols=${getStock}`
         );
+
         if (!response.ok) {
           throw new Error("Marketstack API request failed.");
         }
+
         const data = await response.json();
+
         if (data.data && data.data.length > 0) {
           const result = data.data[0];
           setTickerInfo({
