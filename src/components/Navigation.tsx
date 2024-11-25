@@ -4,7 +4,7 @@ import React from "react";
 type NavigationBarProps = {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  firstName?: string;
+  firstName?: string | null;
 };
 
 const NavigationBar: React.FC<NavigationBarProps> = ({

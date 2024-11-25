@@ -7,6 +7,7 @@ type ChildProps = {
   handleSearchData: (data: string) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  firstName: string;
 };
 
 const SearchSection: React.FC<ChildProps> = ({
