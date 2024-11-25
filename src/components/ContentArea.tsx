@@ -1,7 +1,7 @@
 "use client";
 import { createChart, Time } from "lightweight-charts";
 import { useEffect, useRef } from "react";
-import WatchList from "./WatchList";
+import WatchList from "./watchList/WatchList";
 
 type ChildProps = {
   getStock: string;

@@ -47,7 +47,8 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
       const businessDate = getBusinessDate();
       try {
         const response = await fetch(
-          `http://api.marketstack.com/v1/eod?access_key=${market_API}&symbols=${getStock}&date_from=${businessDate}&date_to=${businessDate}`
+          `https://api.marketstack.com/v1/eod?access_key=${market_API}&symbols=${getStock}
+`
         );
         if (!response.ok) {
           throw new Error("Marketstack API request failed.");
@@ -98,7 +99,7 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
   };
 
   return (
-    <div className="w-full h-auto grid grid-cols-1 md:grid-cols-3  bg-gray-800 p-4">
+    <div className="w-full h-auto grid grid-cols-1 md:grid-cols-3  flex justify-between bg-gray-800 m-0 p-4">
       {/* Ticker Info */}
       <div className="rounded grid grid-rows-2  bg-gray-700 h-full w-full md:w-[300px]">
         <div className="bg-blue-500 text-[30px] md:text-[50px] text-white flex items-center justify-center   h-[125px]">
