@@ -11,22 +11,14 @@ import Estimate from "../components/Estimate";
 import Journal from "../components/Journal";
 import Notes from "../components/Notes";
 
-interface User {
-  id: string;
-  email: string;
-  created_at: string;
-}
-
 export const Fastant = () => {
-  const [users, setUsers] = useState<User[]>([]);
-
   const [stockName, setStockName] = useState<string>("SPY");
+  const [activeTab, setActiveTab] = useState<string>("Chart");
+  const [selectedStock, setSelectedStock] = useState<string>("AAPL");
+
   const handleSearchData = (data: string) => {
     setStockName(data);
   };
-
-  const [activeTab, setActiveTab] = useState<string>("Chart");
-  const [selectedStock, setSelectedStock] = useState<string>("AAPL"); // Example default stock
 
   const renderContent = () => {
     switch (activeTab) {
@@ -42,30 +34,38 @@ export const Fastant = () => {
         return null;
     }
   };
+
   return (
-    <div className="min-h-screen  bg-white">
+    <div className="min-h-screen bg-white">
       {/* Header Section */}
       <Header />
-      {/* News Feed */}
-      <div className="px-4">
-        <NewsFeed />
-      </div>
-      {/* Search Section and Bonds */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 mt-4">
-        <SearchSection
-          handleSearchData={handleSearchData}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
-        <CurrentBonds />
-      </div>
-      {/* Content Area */}
-      <div className="px-4 mt-4">
-        <div className="">{renderContent()}</div>
-      </div>
-      {/* Stock Data */}
-      <div className="mt-4  ">
-        <StockData getStock={stockName} />
+
+      {/* Main Content Wrapper */}
+      <div className="container mx-auto max-w-6xl space-y-6 px-4">
+        {/* News Feed */}
+        <div>
+          <NewsFeed />
+        </div>
+
+        {/* Search Section and Bonds */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <SearchSection
+            handleSearchData={handleSearchData}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+          <CurrentBonds />
+        </div>
+
+        {/* Content Area */}
+        <div className="bg-gray-100  rounded-lg p-3 shadow">
+          {renderContent()}
+        </div>
+
+        {/* Stock Data */}
+        <div className="bg-slate-900 w-full p-4 rounded-lg shadow">
+          <StockData getStock={stockName} />
+        </div>
       </div>
     </div>
   );

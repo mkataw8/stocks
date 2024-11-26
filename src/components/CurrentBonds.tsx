@@ -42,7 +42,7 @@ const CurrentBonds: React.FC = () => {
   };
 
   return (
-    <div className="bg-black text-white p-4 shadow-md h-30">
+    <div className="bg-black text-white p-4 shadow-md h-30 rounded-md ">
       <h3 className="text-lg font-semibold">Bond Information</h3>
       <ul className="mt-2 space-y-2">
         <li className="text-sm">Bond Type: Treasury</li>

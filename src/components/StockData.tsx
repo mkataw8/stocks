@@ -101,9 +101,9 @@ const StockData: React.FC<ChildProps> = ({ getStock }) => {
   };
 
   return (
-    <div className="w-full p-4 bg-gray-900 text-white rounded-lg shadow-lg space-y-4">
+    <div className="w-full p-4 bg-gray-900 text-white rounded-lg shadow-lg  mx-auto max-w-6xl space-y-4">
       {/* Ticker Information */}
-      <div className="flex justify-between items-center border-b border-gray-700 pb-4">
+      <div className="flex justify-between items-center border-b border-gray-700  pb-4">
         <h1 className="text-2xl font-bold">
           {tickerInfo?.ticker || "Loading..."}
         </h1>
