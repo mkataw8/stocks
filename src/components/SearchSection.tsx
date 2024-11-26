@@ -1,7 +1,7 @@
 "use client";
-import NavigationBar from "@/src/components/Navigation";
 import { useUser } from "@clerk/clerk-react";
 import React, { useRef } from "react";
+import NavigationBar from "./Navigation";
 
 type ChildProps = {
   handleSearchData: (data: string) => void;
@@ -28,14 +28,12 @@ const SearchSection: React.FC<ChildProps> = ({
 
   return (
     <div className="col-span-2 content-center">
-      {/* Navigation Bar */}
       <NavigationBar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         firstName={firstName}
       />
 
-      {/* Row: Search Bar */}
       <div className="w-full flex justify-center mt-4">
         <div className="flex items-center border rounded shadow-md px-4 py-2 w-full max-w-5xl bg-gray-200">
           <input
