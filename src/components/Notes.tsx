@@ -11,6 +11,8 @@ const Notes: React.FC = () => {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
 
   const handleAddEntry = () => {
     if (title && content) {
@@ -26,12 +28,45 @@ const Notes: React.FC = () => {
     }
   };
 
-  return (
-    <div className="max-w-4xl mx-auto py-8 px-4 bg-gray-100 rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold text-center mb-6">My Journal</h1>
+  const handleEditEntry = (id: number) => {
+    const entryToEdit = entries.find((entry) => entry.id === id);
+    if (entryToEdit) {
+      setTitle(entryToEdit.title);
+      setContent(entryToEdit.content);
+      setEditingId(id);
+    }
+  };
 
-      {/* Form Section */}
-      <div className="mb-6">
+  const handleSaveEdit = () => {
+    setEntries((prev) =>
+      prev.map((entry) =>
+        entry.id === editingId ? { ...entry, title, content } : entry
+      )
+    );
+    setEditingId(null);
+    setTitle("");
+    setContent("");
+  };
+
+  const handleDeleteEntry = (id: number) => {
+    setEntries((prev) => prev.filter((entry) => entry.id !== id));
+  };
+
+  const handleSelectEntry = (entry: JournalEntry) => {
+    setSelectedEntry(entry);
+  };
+
+  const handleCloseSelectedEntry = () => {
+    setSelectedEntry(null);
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto py-8 px-4 bg-gray-900 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Left Section: Add/Edit Notes */}
+      <div className="text-black bg-white p-4 rounded-md shadow">
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">
+          {editingId ? "Edit Entry" : "Add Entry"}
+        </h2>
         <input
           type="text"
           placeholder="Entry Title"
@@ -47,29 +82,90 @@ const Notes: React.FC = () => {
           onChange={(e) => setContent(e.target.value)}
         />
         <button
-          onClick={handleAddEntry}
+          onClick={editingId ? handleSaveEdit : handleAddEntry}
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
         >
-          Add Entry
+          {editingId ? "Save Changes" : "Add Entry"}
         </button>
+        {editingId && (
+          <button
+            onClick={() => {
+              setEditingId(null);
+              setTitle("");
+              setContent("");
+            }}
+            className="w-full mt-2 bg-gray-300 text-black py-2 rounded-md hover:bg-gray-400 transition duration-200"
+          >
+            Cancel Edit
+          </button>
+        )}
       </div>
 
-      {/* Entries Section */}
-      <div>
-        {entries.length > 0 ? (
-          <ul className="space-y-4">
-            {entries.map((entry) => (
-              <li key={entry.id} className="bg-white p-4 rounded-md shadow">
-                <h2 className="text-xl font-semibold">{entry.title}</h2>
-                <p className="text-gray-600 text-sm mb-2">{entry.date}</p>
-                <p>{entry.content}</p>
-              </li>
-            ))}
-          </ul>
+      {/* Right Section: Display Notes */}
+      <div className="text-white bg-gray-800 p-4 rounded-md shadow">
+        <h2 className="text-2xl font-bold mb-4">
+          {selectedEntry ? "View Entry" : "Your Notes"}
+        </h2>
+        {selectedEntry ? (
+          <div>
+            <h3 className="text-xl font-semibold mb-2">
+              {selectedEntry.title}
+            </h3>
+            <p className="text-sm text-gray-400 mb-4">{selectedEntry.date}</p>
+            <p className="text-gray-200">{selectedEntry.content}</p>
+            <button
+              onClick={handleCloseSelectedEntry}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
+            >
+              Back to Notes
+            </button>
+          </div>
         ) : (
-          <p className="text-gray-500 text-center">
-            No entries yet. Start writing!
-          </p>
+          <div
+            className="space-y-4 overflow-y-auto"
+            style={{ maxHeight: "400px" }}
+          >
+            {entries.length > 0 ? (
+              entries.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="bg-white p-4 rounded-md shadow flex justify-between items-start cursor-pointer"
+                  onClick={() => handleSelectEntry(entry)}
+                >
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      {entry.title}
+                    </h3>
+                    <p className="text-sm text-gray-400">{entry.date}</p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent triggering select
+                        handleEditEntry(entry.id);
+                      }}
+                      className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition duration-200"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent triggering select
+                        handleDeleteEntry(entry.id);
+                      }}
+                      className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition duration-200"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-400 text-center">
+                No entries yet. Start writing!
+              </p>
+            )}
+          </div>
         )}
       </div>
     </div>
