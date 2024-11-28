@@ -35,14 +35,7 @@ export const Fastant = () => {
       case "Chart":
         return <ContentArea getStock={stockName} />;
       case "Journal":
-        return (
-          <Journal
-            data={data}
-            getTotals={getTotals}
-            date={""}
-            ctx={undefined}
-          />
-        );
+        return <Journal />;
       case "Estimate":
         return <Estimate />;
       case "Notes":
