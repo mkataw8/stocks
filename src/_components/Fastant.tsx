@@ -8,10 +8,20 @@ import Header from "@/src/components/Header";
 import SearchSection from "@/src/components/SearchSection";
 import StockData from "@/src/components/StockData";
 import Estimate from "../components/Estimate";
-import Journal from "../components/Journal";
+import Journal from "../components/Graph/Journal";
 import Notes from "../components/Notes";
 
 export const Fastant = () => {
+  const [date, setDate] = useState("12/12/2024");
+  const [amount, setAmount] = useState(243);
+  const [getTotals, setGetTotals] = useState([0]);
+
+  const [data, setData] = useState([
+    {
+      date: "12/12/2024",
+      amount: 543,
+    },
+  ]);
   const [stockName, setStockName] = useState<string>("SPY");
   const [activeTab, setActiveTab] = useState<string>("Chart");
   const [selectedStock, setSelectedStock] = useState<string>("AAPL");
@@ -25,7 +35,14 @@ export const Fastant = () => {
       case "Chart":
         return <ContentArea getStock={stockName} />;
       case "Journal":
-        return <Journal />;
+        return (
+          <Journal
+            data={data}
+            getTotals={getTotals}
+            date={""}
+            ctx={undefined}
+          />
+        );
       case "Estimate":
         return <Estimate />;
       case "Notes":
